@@ -41,7 +41,7 @@ public class User implements UserDetails, Principal {
     @Column(unique = true)
     private String email;
     private String password;
-    private boolean accountLocaked;
+    private boolean accountLocked;
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -84,7 +84,7 @@ public class User implements UserDetails, Principal {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !accountLocaked;
+        return !accountLocked;
     }
 
     @Override
