@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,8 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
+    @Value("${application.mailing.frontend.activation-url}")
+    private String activationUrl;
 
     public void register(RegistirationRequest request) {
         var userRole = roleRepository.findByName("USER")
@@ -45,10 +48,18 @@ public class AuthenticationService {
     private void sendValidationEmail(User user) {
         var newToken = generateAndSaveActivationToken(user);
 
+        emailService.sendEmail(
+                user.getEmail(),
+                user.fullName(),
+                EmailTemplateName.ACTİVATE_ACCOUNT,
+                activationUrl,
+                newToken, "Account Activation");
+
     }
 
     private String generateAndSaveActivationToken(User user) {
         String generatedToken = generateActivationCode(6);
+
         var token = Token.builder()
                 .token(generatedToken)
                 .createdDate(LocalDateTime.now())
