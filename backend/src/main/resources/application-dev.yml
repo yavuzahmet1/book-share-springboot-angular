@@ -33,3 +33,6 @@ application:
     jwt:
       secret-key: ${JWT_SECRET_KEY}
       expiration: ${JWT_EXPIRATION}
+  mailing:
+    frontend:
+      activation-url: ${FRONTEND_URL}/activate-account
