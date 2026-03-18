@@ -36,3 +36,6 @@ application:
   mailing:
     frontend:
       activation-url: ${FRONTEND_URL}/activate-account
+
+server:
+  port: 8088
