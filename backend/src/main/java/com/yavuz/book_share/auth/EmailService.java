@@ -36,7 +36,7 @@ public class EmailService {
         if (emailTemplate == null) {
             templateName = "confirm-email";
         } else {
-            templateName = emailTemplate.name();
+            templateName = emailTemplate.getTemplateName();
         }
 
         try {
@@ -54,7 +54,7 @@ public class EmailService {
             Context thymeleafContext = new Context();
             thymeleafContext.setVariables(properties);
 
-            helper.setFrom("contact@yavuz.com");
+            helper.setFrom("1yavuzahmet@gmail.com");
             helper.setTo(to);
             helper.setSubject(subject);
 
