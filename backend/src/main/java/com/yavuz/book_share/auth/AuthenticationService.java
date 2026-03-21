@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yavuz.book_share.role.RoleRepository;
 import com.yavuz.book_share.security.JwtService;
@@ -18,7 +19,6 @@ import com.yavuz.book_share.user.TokenRepository;
 import com.yavuz.book_share.user.User;
 import com.yavuz.book_share.user.UserRepository;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -101,6 +101,25 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    @Transactional
+    public void activateAccount(String token) {
+        Token verificationToken = tokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Invalid activation token"));
+
+        if (verificationToken.getExpiredDate().isBefore(LocalDateTime.now())) {
+            sendValidationEmail(verificationToken.getUser());
+            throw new RuntimeException("Activation token has expired. A new token has been sent to your email.");
+        }
+
+        var user = userRepository.findById(verificationToken.getUser().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setEnabled(true);
+        userRepository.save(user);
+        verificationToken.setExpiredDate(LocalDateTime.now());
+        tokenRepository.save(verificationToken);
+
     }
 
 }
