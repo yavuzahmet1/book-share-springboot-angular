@@ -11,7 +11,7 @@ import com.yavuz.book_share.role.Role;
 import com.yavuz.book_share.role.RoleRepository;
 
 @SpringBootApplication
-@EnableJpaAuditing
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableAsync
 public class BookShareApiApplication {
 
