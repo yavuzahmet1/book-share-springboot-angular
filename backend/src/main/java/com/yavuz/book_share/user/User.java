@@ -13,6 +13,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.yavuz.book_share.book.Book;
+import com.yavuz.book_share.history.BookTransactionHistory;
 import com.yavuz.book_share.role.Role;
 
 import lombok.AllArgsConstructor;
@@ -46,6 +48,12 @@ public class User implements UserDetails, Principal {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory> bookTransactionHistories;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
