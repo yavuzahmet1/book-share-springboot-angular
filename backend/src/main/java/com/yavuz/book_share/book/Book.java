@@ -1,5 +1,6 @@
 package com.yavuz.book_share.book;
 
+import jakarta.persistence.Transient;
 import java.util.List;
 
 import com.yavuz.book_share.common.BaseEntity;
@@ -42,5 +43,20 @@ public class Book extends BaseEntity {
 
     @OneToMany(mappedBy = "book")
     private List<BookTransactionHistory> bookTransactionHistories;
+
+    @Transient
+    public double getRate() {
+        if (feedBacks == null || feedBacks.isEmpty()) {
+            return 0.0;
+        }
+
+        double avg = this.feedBacks.stream()
+                .mapToDouble(FeedBack::getNote)
+                .average()
+                .orElse(0.0);
+
+        double roundedRate = Math.round(avg * 10.0) / 10.0;
+        return roundedRate;
+    }
 
 }
