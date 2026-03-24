@@ -54,4 +54,21 @@ public class BookService {
                 books.isLast());
     }
 
+    public PageResponse<BookResponse> findAllBooksOwner(int page, int pageSize, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("createdAt").descending());
+        Page<Book> books = bookRepository.findAll(BookSpecification.withOwnerId(user.getId()), pageable);
+        List<BookResponse> bookResponse = books.stream()
+                .map(bookMapper::toBookResponse)
+                .toList();
+        return new PageResponse<>(
+                bookResponse,
+                books.getNumber(),
+                books.getSize(),
+                books.getTotalElements(),
+                books.getTotalPages(),
+                books.isFirst(),
+                books.isLast());
+    }
+
 }
