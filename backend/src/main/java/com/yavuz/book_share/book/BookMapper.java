@@ -2,6 +2,8 @@ package com.yavuz.book_share.book;
 
 import org.springframework.stereotype.Service;
 
+import com.yavuz.book_share.history.BookTransactionHistory;
+
 @Service
 public class BookMapper {
 
@@ -24,10 +26,22 @@ public class BookMapper {
                 .isbn(book.getIsbn())
                 .synopsis(book.getSynopsis())
                 .owner(book.getOwner().getUsername())
-                .cover(book.getBookCover() != null ? book.getBookCover().getBytes() : null)
                 .rate(book.getRate())
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
+                .cover(book.getBookCover() != null ? book.getBookCover().getBytes() : null)
+                .build();
+    }
+
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory history) {
+        return BorrowedBookResponse.builder()
+                .id(history.getBook().getId())
+                .title(history.getBook().getTitle())
+                .authorName(history.getBook().getAuthorName())
+                .isbn(history.getBook().getIsbn())
+                .rate(history.getBook().getRate())
+                .returned(history.isReturned())
+                .returnApproved(history.isReturnApproved())
                 .build();
     }
 
