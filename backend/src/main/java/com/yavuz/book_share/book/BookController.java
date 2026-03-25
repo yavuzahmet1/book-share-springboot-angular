@@ -50,4 +50,12 @@ public class BookController {
         return ResponseEntity.ok(bookService.findAllBooksOwner(page, pageSize, connectedUser));
     }
 
+    @GetMapping("/borrowed")
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllBorrowedBooks(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int pageSize,
+            Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.findAllBorrowedBooks(page, pageSize, connectedUser));
+    }
+
 }
