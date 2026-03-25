@@ -9,9 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.yavuz.book_share.user.User;
 
+import org.springframework.lang.NonNull;
+
 public class ApplicationAuditAware implements AuditorAware<Integer> {
 
     @Override
+    @NonNull
     public Optional<Integer> getCurrentAuditor() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
