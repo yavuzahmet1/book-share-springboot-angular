@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.yavuz.book_share.exception.OperationNotPermittedExcepition;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -58,6 +60,19 @@ public class GlobalExceptionHandler {
                                 .body(ExceptionResponse.builder()
                                                 .businessErrorCode(code.getCode())
                                                 .businessExceptionDescription(code.getDescription())
+                                                .error(e.getMessage())
+                                                .build());
+        }
+
+        @ExceptionHandler(OperationNotPermittedExcepition.class)
+        public ResponseEntity<ExceptionResponse> handleException(OperationNotPermittedExcepition e) {
+
+                return ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .body(ExceptionResponse.builder()
+                                                .businessErrorCode(BusinessErrorCodes.INVALID_REQUEST.getCode())
+                                                .businessExceptionDescription(
+                                                                BusinessErrorCodes.INVALID_REQUEST.getDescription())
                                                 .error(e.getMessage())
                                                 .build());
         }
