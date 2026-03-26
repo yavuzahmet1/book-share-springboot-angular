@@ -2,8 +2,6 @@
 
 **Book Share API** is a modern, scalable **RESTful API** platform that allows users to manage, share, and lend books. Built with **Spring Boot 3**, the project follows industry best practices regarding security, database auditing, and interactive documentation.
 
-
-
 ## 🚀 Key Features
 
 * **Secure Authentication:** Implements **Spring Security** with **JWT (JSON Web Token)** for stateless, token-based authentication.
@@ -37,8 +35,6 @@ The system is built around four core entities:
 3.  **BookTransactionHistory:** Manages the lifecycle of book loans, including return status and approvals.
 4.  **FeedBack:** Stores ratings and comments for books.
 
-
-
 ---
 
 ## ⚙️ Setup and Installation
@@ -50,11 +46,17 @@ The system is built around four core entities:
 
 ### 2. Environment Variables (.env)
 Create a `.env` file in the root directory and configure the following variables:
+*(Add your environment variables explanation here)*
 
+---
 
 ## 📖 API Documentation (Swagger)
 
 Once the application is running, you can access the interactive Swagger UI to explore and test the endpoints:
 
-🔗 Swagger UI: http://localhost:8088/api/v1/swagger-ui/index.html
+🔗 **Swagger UI:** http://localhost:8088/api/v1/swagger-ui/index.html
 
+### 📌 Endpoints Overview
+Here is a quick look at the available endpoints in the Book Share API:
+
+![Book Share API Swagger Endpoints](backend/images/api-endpoints.png)
