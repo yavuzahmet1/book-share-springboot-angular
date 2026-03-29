@@ -236,4 +236,15 @@ public class BookService {
                 return transactionHistoryRepository.save(bookTransactionHistory).getId();
         }
 
+        public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
+
+                Book book = bookRepository.findById(bookId)
+                                .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + bookId));
+
+                User user = ((User) connectedUser.getPrincipal());
+                var bookCover = fileStorageService.saveFile(file, book, user.getId());
+                book.setBookCover(bookCover);
+                bookRepository.save(book);
+        }
+
 }
