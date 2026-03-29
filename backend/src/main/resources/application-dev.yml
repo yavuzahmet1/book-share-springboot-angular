@@ -36,6 +36,9 @@ application:
   mailing:
     frontend:
       activation-url: ${FRONTEND_URL}/activate-account
+  file:
+    upload:
+      photos-output-path: ${FILE_UPLOAD_PATH}
 
 server:
   port: 8088
