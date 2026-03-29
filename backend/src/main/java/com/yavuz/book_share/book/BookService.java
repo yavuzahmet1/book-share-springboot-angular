@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.yavuz.book_share.book.file.FileStorageService;
 import com.yavuz.book_share.exception.OperationNotPermittedExcepition;
 import com.yavuz.book_share.history.BookTransactionHistory;
 import com.yavuz.book_share.history.BookTransactionHistoryRepository;
@@ -26,6 +28,7 @@ public class BookService {
         private final BookRepository bookRepository;
         private final BookMapper bookMapper;
         private final BookTransactionHistoryRepository transactionHistoryRepository;
+        private final FileStorageService fileStorageService;
 
         public Integer save(BookRequest request, Authentication connectedUser) {
                 User user = ((User) connectedUser.getPrincipal());
@@ -196,6 +199,40 @@ public class BookService {
 
                 bookTransactionHistory.setReturned(true);
 
+                return transactionHistoryRepository.save(bookTransactionHistory).getId();
+        }
+
+        public Integer approveReturnBorrowBook(Integer bookId, Authentication connectedUser) {
+                Book book = bookRepository.findById(bookId)
+                                .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + bookId));
+
+                if (book.isArchived() || !book.isShareable()) {
+                        throw new OperationNotPermittedExcepition(
+                                        "The requested book cannot be returned because it is archived or not shareable.");
+                }
+
+                User user = ((User) connectedUser.getPrincipal());
+
+                if (!Objects.equals(book.getOwner().getId(), user.getId())) {
+                        throw new OperationNotPermittedExcepition(
+                                        "You cannot approve the return of a book you do not own.");
+                }
+
+                BookTransactionHistory bookTransactionHistory = transactionHistoryRepository
+                                .findByBookIdAndOwnerId(bookId, user.getId())
+                                .orElseThrow(() -> new OperationNotPermittedExcepition(
+                                                "No transaction history found for this book and owner."));
+
+                if (!bookTransactionHistory.isReturned()) {
+                        throw new OperationNotPermittedExcepition(
+                                        "The book is not returned yet. You can't approve its return!!");
+                }
+
+                if (bookTransactionHistory.isReturnApproved()) {
+                        throw new OperationNotPermittedExcepition("The return is already approved.");
+                }
+
+                bookTransactionHistory.setReturnApproved(true);
                 return transactionHistoryRepository.save(bookTransactionHistory).getId();
         }
 
