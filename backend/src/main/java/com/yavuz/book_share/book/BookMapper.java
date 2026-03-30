@@ -2,6 +2,7 @@ package com.yavuz.book_share.book;
 
 import org.springframework.stereotype.Service;
 
+import com.yavuz.book_share.book.file.FileUtils;
 import com.yavuz.book_share.history.BookTransactionHistory;
 
 @Service
@@ -29,7 +30,7 @@ public class BookMapper {
                 .rate(book.getRate())
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
-                .cover(book.getBookCover() != null ? book.getBookCover().getBytes() : null)
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
     }
 
