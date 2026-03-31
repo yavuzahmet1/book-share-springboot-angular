@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.yavuz.book_share.book.Book;
-
 public interface BookTransactionHistoryRepository extends JpaRepository<BookTransactionHistory, Integer> {
 
         @Query("""
@@ -57,6 +55,5 @@ public interface BookTransactionHistoryRepository extends JpaRepository<BookTran
                         """)
         Optional<BookTransactionHistory> findByBookIdAndOwnerId(
                         @Param("bookId") Integer bookId,
-                        @Param("userId") Integer userId // Burada @Param eklendi ve id -> userId yapıldı
-        );
+                        @Param("userId") Integer userId);
 }
