@@ -1,5 +1,7 @@
 package com.yavuz.book_share.feedback;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 
 import com.yavuz.book_share.book.Book;
@@ -16,6 +18,14 @@ public class FeedBackMapper {
                         .archived(false)
                         .shareable(false)
                         .build())
+                .build();
+    }
+
+    public FeedBackResponse toFeedBackResponse(FeedBack f, Integer id) {
+        return FeedBackResponse.builder()
+                .note(f.getNote())
+                .comment(f.getComment())
+                .ownFeedBack(Objects.equals(f.getCreatedBy(), id))
                 .build();
     }
 }
