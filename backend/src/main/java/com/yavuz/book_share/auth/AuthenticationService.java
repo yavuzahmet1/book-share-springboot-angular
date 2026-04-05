@@ -31,25 +31,27 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
-    private final JwtService JwtService;
+    private final JwtService jwtService;
+
     @Value("${application.mailing.frontend.activation-url}")
     private String activationUrl;
 
     public void register(RegistirationRequest request) {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("USER ROLE not found in the database"));
+
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .accountLocked(false)
-                .enabled(false)
+                .enabled(true)
                 .roles(List.of(userRole))
                 .build();
+
         userRepository.save(user);
         sendValidationEmail(user);
-
     }
 
     private void sendValidationEmail(User user) {
@@ -60,8 +62,8 @@ public class AuthenticationService {
                 user.fullName(),
                 EmailTemplateName.ACTIVATE_ACCOUNT,
                 activationUrl,
-                newToken, "Account Activation");
-
+                newToken,
+                "Account Activation");
     }
 
     private String generateAndSaveActivationToken(User user) {
@@ -73,6 +75,7 @@ public class AuthenticationService {
                 .expiredDate(LocalDateTime.now().plusMinutes(15))
                 .user(user)
                 .build();
+
         tokenRepository.save(token);
         return generatedToken;
     }
@@ -89,15 +92,17 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-
         var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()));
+
         var claims = new HashMap<String, Object>();
         var user = ((User) auth.getPrincipal());
         claims.put("fullName", user.fullName());
-        var jwtToken = JwtService.generateToken(claims, user);
+
+        var jwtToken = jwtService.generateToken(claims, user);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -115,11 +120,11 @@ public class AuthenticationService {
 
         var user = userRepository.findById(verificationToken.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         user.setEnabled(true);
         userRepository.save(user);
+
         verificationToken.setExpiredDate(LocalDateTime.now());
         tokenRepository.save(verificationToken);
-
     }
-
 }
