@@ -34,12 +34,11 @@ export class Login {
       this.router.navigate(['books']);
 
     } catch (err: any) {
-      console.error(err);
 
       if (err.error?.validationErrors) {
         this.errorMessage = err.error.validationErrors;
       } else {
-        this.errorMessage.push(err.error?.message || 'Giriş sırasında bir hata oluştu.');
+        this.errorMessage.push(err.error?.message || 'Entered credentials are incorrect');
       }
 
     } finally {
