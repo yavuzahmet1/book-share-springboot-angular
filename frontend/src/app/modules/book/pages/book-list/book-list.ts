@@ -1,0 +1,35 @@
+import { Component, OnInit } from '@angular/core';
+import { BookService } from '../../../../services/services';
+import { Router } from '@angular/router';
+import { PageResponseBookResponse } from '../../../../services/models';
+
+@Component({
+  selector: 'app-book-list',
+  imports: [],
+  templateUrl: './book-list.html',
+  styleUrl: './book-list.scss',
+})
+export class BookList implements OnInit {
+  bookResponse: PageResponseBookResponse = {};
+  size: number = 5;
+  page: number = 0;
+
+  constructor(
+    private bookService: BookService,
+    private router: Router
+  ) {
+
+  }
+  ngOnInit(): void {
+    this.findAllBooks();
+  }
+
+  findAllBooks() {
+    this.bookService.findAllBooks({ size: this.size, page: this.page })
+      .then((response) => {
+        this.bookResponse = response;
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+}
