@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../../../services/services';
 import { Router } from '@angular/router';
 import { PageResponseBookResponse } from '../../../../services/models';
+import { BookCard } from "../../components/book-card/book-card";
 
 @Component({
   selector: 'app-book-list',
-  imports: [],
+  imports: [BookCard],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss',
 })
