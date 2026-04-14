@@ -11,9 +11,11 @@ import { BookCard } from "../../components/book-card/book-card";
   styleUrl: './book-list.scss',
 })
 export class BookList implements OnInit {
+
   bookResponse: PageResponseBookResponse = {};
   size: number = 5;
   page: number = 0;
+
 
   constructor(
     private bookService: BookService,
@@ -33,4 +35,25 @@ export class BookList implements OnInit {
         console.log(error);
       });
   }
+
+  goToFirstPage() {
+    throw new Error('Method not implemented.');
+  }
+
+  goToPreviousPage() {
+    throw new Error('Method not implemented.');
+  }
+
+  goToPage() {
+    throw new Error('Method not implemented.');
+  }
+
+  goToNextPage() {
+    throw new Error('Method not implemented.');
+  }
+
+  goToLastPage() {
+    throw new Error('Method not implemented.');
+  }
+
 }
