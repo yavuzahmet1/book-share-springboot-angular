@@ -60,3 +60,10 @@ Once the application is running, you can access the interactive Swagger UI to ex
 Here is a quick look at the available endpoints in the Book Share API:
 
 ![Book Share API Swagger Endpoints](backend/images/api-endpoints.png)
+
+---
+
+### 💻 User Interface (UI) Preview
+Here is a glimpse of the frontend application interface:
+
+![Frontend User Interface](frontend/src/assets/images/ui.png)
