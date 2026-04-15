@@ -16,13 +16,11 @@ export class BookList implements OnInit {
   size: number = 5;
   page: number = 0;
 
-
   constructor(
     private bookService: BookService,
     private router: Router
-  ) {
+  ) { }
 
-  }
   ngOnInit(): void {
     this.findAllBooks();
   }
@@ -36,24 +34,42 @@ export class BookList implements OnInit {
       });
   }
 
+  get pageNumbers(): number[] {
+    const total = this.bookResponse?.totalPages || 0;
+    return Array.from({ length: total }, (_, i) => i);
+  }
+
+  goToPage(pageIndex: number) {
+    if (this.page === pageIndex) return;
+
+    this.page = pageIndex;
+    this.findAllBooks();
+  }
+
   goToFirstPage() {
-    throw new Error('Method not implemented.');
+    this.goToPage(0);
   }
 
   goToPreviousPage() {
-    throw new Error('Method not implemented.');
-  }
-
-  goToPage() {
-    throw new Error('Method not implemented.');
+    if (this.page > 0) {
+      this.goToPage(this.page - 1);
+    }
   }
 
   goToNextPage() {
-    throw new Error('Method not implemented.');
+    const total = this.bookResponse?.totalPages || 1;
+    if (this.page < total - 1) {
+      this.goToPage(this.page + 1);
+    }
   }
 
   goToLastPage() {
-    throw new Error('Method not implemented.');
+    const total = this.bookResponse?.totalPages || 1;
+    this.goToPage(total - 1);
+  }
+
+  get isLastPage(): boolean {
+    return this.bookResponse.totalPages === this.page + 1;
   }
 
 }
