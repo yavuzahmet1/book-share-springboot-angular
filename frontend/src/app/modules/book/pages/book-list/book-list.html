@@ -2,7 +2,7 @@
 <hr>
 <div class="d-flex justify-content-start gap-2 flex-wrap align-items-stretch">
     @for (bookItem of bookResponse.content; track bookItem.id) {
-    <app-book-card [bookItem]="bookItem"></app-book-card>
+    <app-book-card [bookItem]="bookItem" (borrow)="borrowBook($event)"></app-book-card>
     } @empty {
     <div class="alert alert-info">The book list is empty.</div>
     }
