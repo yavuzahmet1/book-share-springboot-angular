@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../../../services/services';
 import { Router } from '@angular/router';
-import { PageResponseBookResponse } from '../../../../services/models';
+import { BookResponse, PageResponseBookResponse } from '../../../../services/models';
 import { BookCard } from "../../components/book-card/book-card";
 
 @Component({
@@ -11,6 +11,19 @@ import { BookCard } from "../../components/book-card/book-card";
   styleUrl: './book-list.scss',
 })
 export class BookList implements OnInit {
+  message: string = "";
+  borrowBook(bookItem: BookResponse) {
+    this.message = "";
+    this.bookService.borrowBook({ "book-id": bookItem.id as number }).then(() => {
+      this.message = "Book borrowed successfully!";
+      this.findAllBooks();
+    }).catch((error) => {
+      console.log(error);
+      alert('Failed to borrow book. Please try again.');
+    }
+    );
+
+  }
 
   bookResponse: PageResponseBookResponse = {};
   size: number = 5;
