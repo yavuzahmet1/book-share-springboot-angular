@@ -1,4 +1,9 @@
 <h3>Book List</h3>
+@if (message) {
+<div class="alert" [class.alert-danger]="level === 'error'" [class.alert-success]="level === 'success'" role="alert">
+    {{ message }}
+</div>
+}
 <hr>
 <div class="d-flex justify-content-start gap-2 flex-wrap align-items-stretch">
     @for (bookItem of bookResponse.content; track bookItem.id) {
