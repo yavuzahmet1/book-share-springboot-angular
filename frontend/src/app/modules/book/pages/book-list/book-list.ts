@@ -11,28 +11,31 @@ import { BookCard } from "../../components/book-card/book-card";
   styleUrl: './book-list.scss',
 })
 export class BookList implements OnInit {
-  message: string = "";
-  borrowBook(bookItem: BookResponse) {
-    this.message = "";
-    this.bookService.borrowBook({ "book-id": bookItem.id as number }).then(() => {
-      this.message = "Book borrowed successfully!";
-      this.findAllBooks();
-    }).catch((error) => {
-      console.log(error);
-      alert('Failed to borrow book. Please try again.');
-    }
-    );
-
-  }
-
   bookResponse: PageResponseBookResponse = {};
   size: number = 5;
   page: number = 0;
+  message: string = "";
+  level: string = "success";
 
   constructor(
     private bookService: BookService,
     private router: Router
   ) { }
+
+  borrowBook(bookItem: BookResponse) {
+    this.message = "";
+    this.bookService.borrowBook({ "book-id": bookItem.id as number }).then(() => {
+      this.level = "success";
+      this.message = "Book borrowed successfully!";
+      this.findAllBooks();
+    }).catch((error) => {
+      console.log(error);
+      this.level = "error";
+      this.message = "Failed to borrow book. Please try again.";
+    }
+    );
+
+  }
 
   ngOnInit(): void {
     this.findAllBooks();
