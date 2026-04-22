@@ -1,47 +1,61 @@
 <div class="p-2 container">
-        <h2>Manage Book</h2>
-       
+    <h2>Manage Book</h2>
+
     <hr>
 
-        @if (errorMessage && errorMessage.length > 0) {
-        <div class="alert alert-danger mt-2" role="alert">
-                @for (msg of errorMessage; track msg) {
-                <p class="p-0 m-0">{{ msg }}</p>
-                }
-            </div>
-        }
+    @if (errorMessage && errorMessage.length > 0) {
+    <div class="alert alert-danger mt-2" role="alert">
+        @for (msg of errorMessage; track msg) {
+        <p class="p-0 m-0">{{ msg }}</p>
+        }
+    </div>
+    }
 
-        <div class="d-flex flex-wrap gap-5 mt-4">
+    <div class="d-flex flex-wrap gap-5 mt-4">
 
-                <div style="width: 150px;">
-                        <img [src]="selectedPicture || 'images/default.png'" alt="Book Cover"
-                class="rounded-1 shadow-sm"                 style="width: 150px; height: 200px; object-fit: cover;">
+        <div style="width: 150px;">
+            <img [src]="selectedPicture || 'images/default.png'" alt="Book Cover" class="rounded-1 shadow-sm"
+                style="width: 150px; height: 200px; object-fit: cover;">
 
-                        <div class="mt-2">
-                                <input (change)="onFileSelected($event)" type="file"
-                    class="form-control form-control-sm" id="formFile"                     accept="image/*">
-                            </div>
-                    </div>
+            <div class="mt-2">
+                <input (change)="onFileSelected($event)" type="file" class="form-control form-control-sm" id="formFile"
+                    accept="image/*">
+            </div>
+        </div>
 
-                <div class="flex-grow-1" style="max-width: 600px;">
-                        <div class="mb-3">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" placeholder="Book Title">
-                            </div>
-                        <div class="mb-3">
-                                <label for="author" class="form-label">Author</label>
-                                <input type="text" class="form-control" id="author" placeholder="Book Author">
-                            </div>
-                        <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" rows="4"
-                    placeholder="Book Description"></textarea>
-                            </div>
-                        <div class="d-flex justify-content-end gap-2 mt-4">
-                                <button class="btn btn-outline-secondary" type="button">Cancel</button>
-                                <button class="btn btn-primary" type="button">Save Book</button>
-                            </div>
-                    </div>
+        <div class="flex-grow-1" style="max-width: 600px;">
+            <div class="mb-3 col-12">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" [(ngModel)]="bookRequest.title" class="form-control" id="title"
+                    placeholder="Book Title">
+            </div>
+            <div class="mb-3 col-6">
+                <label for="author" class="form-label">Author</label>
+                <input type="text" [(ngModel)]="bookRequest.authorName" class="form-control" id="author"
+                    placeholder="Book Author">
+            </div>
+            <div class="mb-3 col-6">
+                <label for="isbn" class="form-label">ISBN</label>
+                <input type="text" [(ngModel)]="bookRequest.isbn" class="form-control" id="isbn"
+                    placeholder="Book ISBN">
+            </div>
+            <div class="mb-3 col-12">
+                <label for="synopsis" class="form-label">Synopsis</label>
+                <textarea [(ngModel)]="bookRequest.synopsis" class="form-control" id="synopsis" rows="4"
+                    placeholder="Book Synopsis"></textarea>
+            </div>
+            <div class="col-12">
+                <input type="checkbox" [(ngModel)]="bookRequest.shareable" class="form-check-input" name="shareable"
+                    id="shareable">
+                <label for="shareable" class="form-label">&nbsp;Share Me</label>
+            </div>
+            <div class="d-flex justify-content-end gap-2 col-12">
+                <button (click)="saveBook()" class="btn btn-primary" type="button"><i class="fas fa-save"></i>&nbsp;Save
+                    Book</button>
+                <a routerLink="/books/my-books" class="btn btn-link text-danger"><i
+                        class="fas fa-times"></i>&nbsp;Cancel</a>
+            </div>
+        </div>
 
-            </div>
+    </div>
 </div>
