@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../../../services/services';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BookResponse, PageResponseBookResponse } from '../../../../services/models';
 import { BookCard } from "../../components/book-card/book-card";
 
@@ -11,7 +11,6 @@ import { BookCard } from "../../components/book-card/book-card";
   styleUrl: './my-books.scss',
 })
 export class MyBooks implements OnInit {
-
   bookResponse: PageResponseBookResponse = {
     content: [],
     totalPages: 0,
@@ -22,6 +21,8 @@ export class MyBooks implements OnInit {
 
   constructor(
     private bookService: BookService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
 
@@ -63,7 +64,9 @@ export class MyBooks implements OnInit {
     return (this.bookResponse?.totalPages ?? 0) <= this.page + 1;
   }
 
-  editBook(book: BookResponse) { console.log('Edit:', book); }
+  editBook(book: BookResponse): void {
+    this.router.navigate(['books', 'manage', book.id]);
+  }
   shareBook(book: BookResponse) { console.log('Share:', book); }
   archiveBook(book: BookResponse) { console.log('Archive:', book); }
 
