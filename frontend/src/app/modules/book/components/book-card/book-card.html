@@ -1,4 +1,5 @@
-<div class="card h-100 d-flex flex-column" style="width: 20rem;">
+<div class="card h-100 d-flex flex-column" style="width: 20rem;" [class.border-success]="bookItem().shareable"
+    [class.border-warning]="bookItem().archived">
     <img [src]="bookCover()" class="card-img-top" alt="Book Cover" height="200">
 
     <div class="card-body d-flex flex-column">
@@ -12,7 +13,7 @@
             <i class="fa-solid fa-barcode"></i> &nbsp;{{ bookItem().isbn }}
         </h6>
         <h6 class="card-title fs-6 text-scroll fw-bold mb-1">
-            <i class="fa-solid fa-barcode"></i> &nbsp;{{ bookItem().owner }}
+            <i class="fa-solid fa-user"></i> &nbsp;{{ bookItem().owner }}
         </h6>
         <hr>
         <p class="card-text flex-grow-1">{{ bookItem().synopsis }}</p>
