@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BookRequest } from '../../../../services/models';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterModule } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink, RouterModule } from "@angular/router";
 import { BookService } from '../../../../services/services';
 
 
@@ -11,7 +11,7 @@ import { BookService } from '../../../../services/services';
   templateUrl: './manage-book.html',
   styleUrl: './manage-book.scss',
 })
-export class ManageBook {
+export class ManageBook implements OnInit {
 
   bookRequest: BookRequest = {
     authorName: '',
@@ -27,8 +27,30 @@ export class ManageBook {
   constructor(
     private cdr: ChangeDetectorRef,
     private bookService: BookService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
+  ngOnInit(): void {
+    const bookId = this.activatedRoute.snapshot.params['bookId'];
+    if (bookId) {
+      this.bookService.findBookById({ 'book-id': bookId })
+        .then((response) => {
+          this.bookRequest = {
+            title: response.title as string,
+            authorName: response.authorName as string,
+            isbn: response.isbn as string,
+            synopsis: response.synopsis as string,
+            shareable: response.shareable as boolean
+          };
+
+          if (response.cover) {
+            this.selectedPicture = 'data:image/jpeg;base64,' + response.cover;
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
+  }
 
   onFileSelected(event: Event) {
     this.selectedBookCover = (event.target as HTMLInputElement).files?.[0];
