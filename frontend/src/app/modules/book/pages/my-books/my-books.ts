@@ -67,7 +67,25 @@ export class MyBooks implements OnInit {
   editBook(book: BookResponse): void {
     this.router.navigate(['books', 'manage', book.id]);
   }
-  shareBook(book: BookResponse) { console.log('Share:', book); }
-  archiveBook(book: BookResponse) { console.log('Archive:', book); }
+
+  shareBook(book: BookResponse): void {
+    this.bookService.updateShareableStatus({
+      'book-id': book.id as number
+    }).then(() => {
+      book.shareable = !book.shareable;
+    }).catch((error) => {
+      console.error('Share error : ', error);
+    });
+  }
+
+  archiveBook(book: BookResponse): void {
+    this.bookService.updateArchivedStatus({
+      'book-id': book.id as number
+    }).then(() => {
+      book.archived = !book.archived;
+    }).catch((error) => {
+      console.error('Archived error : ', error);
+    });
+  }
 
 }
