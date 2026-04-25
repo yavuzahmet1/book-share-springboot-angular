@@ -13,6 +13,7 @@ export class BorrowedBookList implements OnInit {
   borrowedBooks: PageResponseBorrowedBookResponse = {};
   page = 0;
   size = 5;
+  selectedBook: BorrowedBookResponse = {};
 
   constructor(
     private bookService: BookService
@@ -23,7 +24,8 @@ export class BorrowedBookList implements OnInit {
   }
 
   returnBorrowedBook(book: BorrowedBookResponse) {
-    throw new Error('Method not implemented.');
+    this.selectedBook = book;
+
   }
 
   findAllBorrowedBooks() {
@@ -35,4 +37,39 @@ export class BorrowedBookList implements OnInit {
     });
   }
 
+  goToPage(pageIndex: number) {
+    const total = this.borrowedBooks?.totalPages ?? 0;
+
+    if (pageIndex < 0 || pageIndex >= total || this.page === pageIndex) {
+      return;
+    }
+
+    this.page = pageIndex;
+    this.findAllBorrowedBooks();
+  }
+
+  goToFirstPage() {
+    this.goToPage(0);
+  }
+
+  goToPreviousPage() {
+    this.goToPage(this.page - 1);
+  }
+
+  goToNextPage() {
+    this.goToPage(this.page + 1);
+  }
+
+  goToLastPage() {
+    this.goToPage((this.borrowedBooks.totalPages ?? 1) - 1);
+  }
+
+  get isLastPage(): boolean {
+    return (this.borrowedBooks?.totalPages ?? 0) <= this.page + 1;
+  }
+
+  get pageNumbers(): number[] {
+    const totalPages = this.borrowedBooks?.totalPages ?? 0;
+    return Array.from({ length: totalPages }, (_, i) => i);
+  }
 }
