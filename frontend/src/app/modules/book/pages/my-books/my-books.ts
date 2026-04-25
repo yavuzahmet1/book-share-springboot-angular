@@ -55,10 +55,10 @@ export class MyBooks implements OnInit {
     this.findAllBooks();
   }
 
-  goToFirstPage() { this.goToPage(0); }
-  goToPreviousPage() { this.goToPage(this.page - 1); }
-  goToNextPage() { this.goToPage(this.page + 1); }
-  goToLastPage() { this.goToPage((this.bookResponse?.totalPages ?? 1) - 1); }
+  goToFirstPage() { this.goToPage(0); this.findAllBooks(); }
+  goToPreviousPage() { this.goToPage(this.page - 1); this.findAllBooks(); }
+  goToNextPage() { this.goToPage(this.page + 1); this.findAllBooks(); }
+  goToLastPage() { this.goToPage((this.bookResponse?.totalPages ?? 1) - 1); this.findAllBooks(); }
 
   get isLastPage(): boolean {
     return (this.bookResponse?.totalPages ?? 0) <= this.page + 1;
