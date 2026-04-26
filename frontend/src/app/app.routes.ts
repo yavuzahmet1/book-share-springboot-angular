@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
+        path: '',
+        redirectTo: 'books',
+        pathMatch: 'full'
+    },
+    {
         path: 'login',
         loadComponent: () => import('./pages/login/login').then(m => m.Login)
     },
@@ -16,5 +21,9 @@ export const routes: Routes = [
     {
         path: 'books',
         loadChildren: () => import('./modules/book/book.routes').then(m => m.bookRoutes)
+    },
+    {
+        path: '**',
+        redirectTo: 'books'
     }
 ];
