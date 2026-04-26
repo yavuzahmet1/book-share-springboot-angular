@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
+import { TokenService } from '../../../../services/token/token';
 
 @Component({
   selector: 'app-menu',
@@ -8,6 +9,11 @@ import { RouterLink } from "@angular/router";
   styleUrl: './menu.scss',
 })
 export class Menu implements OnInit {
+  constructor(
+    private router: Router,
+    private tokenService: TokenService
+  ) { }
+
   ngOnInit(): void {
     const linkColor = document.querySelectorAll('.nav-link');
 
@@ -23,6 +29,7 @@ export class Menu implements OnInit {
   }
 
   logout() {
-    throw new Error('Method not implemented.');
+    this.tokenService.clear();
+    this.router.navigate(['login']);
   }
 }
