@@ -1,16 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { BorrowedBookResponse, PageResponseBorrowedBookResponse } from '../../../../services/models';
+import { BorrowedBookResponse, FeedBackRequest, PageResponseBorrowedBookResponse } from '../../../../services/models';
 import { BookService } from '../../../../services/services';
+import { FormsModule } from "@angular/forms";
+import { RouterLink } from "@angular/router";
+import { Rating } from "../../components/rating/rating";
 
 @Component({
   selector: 'app-borrowed-book-list',
-  imports: [],
+  imports: [FormsModule, RouterLink, Rating],
   templateUrl: './borrowed-book-list.html',
   styleUrl: './borrowed-book-list.scss',
 })
 export class BorrowedBookList implements OnInit {
 
+
   borrowedBooks: PageResponseBorrowedBookResponse = {};
+  feedbackRequest: FeedBackRequest = {
+    bookId: 0,
+    comment: '',
+    note: 0,
+  };
   page = 0;
   size = 5;
   selectedBook: BorrowedBookResponse = {};
@@ -25,7 +34,6 @@ export class BorrowedBookList implements OnInit {
 
   returnBorrowedBook(book: BorrowedBookResponse) {
     this.selectedBook = book;
-
   }
 
   findAllBorrowedBooks() {
@@ -71,5 +79,9 @@ export class BorrowedBookList implements OnInit {
   get pageNumbers(): number[] {
     const totalPages = this.borrowedBooks?.totalPages ?? 0;
     return Array.from({ length: totalPages }, (_, i) => i);
+  }
+
+  returnBook(withFeedback: boolean) {
+    throw new Error('Method not implemented.');
   }
 }
