@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BorrowedBookResponse, FeedBackRequest, PageResponseBorrowedBookResponse } from '../../../../services/models';
-import { BookService } from '../../../../services/services';
+import { BookService, FeedBackService } from '../../../../services/services';
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { Rating } from "../../components/rating/rating";
@@ -12,8 +12,6 @@ import { Rating } from "../../components/rating/rating";
   styleUrl: './borrowed-book-list.scss',
 })
 export class BorrowedBookList implements OnInit {
-
-
   borrowedBooks: PageResponseBorrowedBookResponse = {};
   feedbackRequest: FeedBackRequest = {
     bookId: 0,
@@ -22,10 +20,11 @@ export class BorrowedBookList implements OnInit {
   };
   page = 0;
   size = 5;
-  selectedBook: BorrowedBookResponse = {};
+  selectedBook: BorrowedBookResponse | undefined = undefined;
 
   constructor(
-    private bookService: BookService
+    private bookService: BookService,
+    private feebackService: FeedBackService,
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +33,7 @@ export class BorrowedBookList implements OnInit {
 
   returnBorrowedBook(book: BorrowedBookResponse) {
     this.selectedBook = book;
+    this.feedbackRequest.bookId = book.id as number;
   }
 
   findAllBorrowedBooks() {
@@ -82,6 +82,28 @@ export class BorrowedBookList implements OnInit {
   }
 
   returnBook(withFeedback: boolean) {
-    throw new Error('Method not implemented.');
+    this.bookService.returnBorrowBook({
+      'book-id': this.selectedBook?.id as number,
+    }).then(() => {
+      if (withFeedback) {
+        this.giveFeedback();
+      }
+    });
+    this.selectedBook = undefined;
+    this.findAllBorrowedBooks();
+  }
+
+
+  giveFeedback() {
+    this.feebackService.saveFeedBack({
+      body: this.feedbackRequest,
+    }).then(() => {
+      this.feedbackRequest = {
+        bookId: 0,
+        comment: '',
+        note: 0,
+      };
+
+    });
   }
 }
