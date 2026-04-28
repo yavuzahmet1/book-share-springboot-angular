@@ -28,6 +28,11 @@ export const bookRoutes: Routes = [
                 path: 'my-borrowed-books',
                 component: BorrowedBookList,
             }
+            ,
+            {
+                path: 'my-returned-books',
+                component: BorrowedBookList,
+            }
             , {
                 path: "manage",
                 component: ManageBook
