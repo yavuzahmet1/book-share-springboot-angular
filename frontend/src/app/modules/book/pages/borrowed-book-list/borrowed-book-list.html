@@ -1,5 +1,6 @@
 <h2>My Borrowed Books</h2>
 <hr>
+@if(selectedBook){
 <div class="d-flex flex-column col-6">
     <h2>Return and share feedback</h2>
     <div class="d-flex flex-column col-12">
@@ -48,17 +49,19 @@
                             class="fas fa-save"></i>&nbsp;Rate the book & Return</button>
                     <button type="submit" class="btn btn-outline-secondary" (click)="returnBook(false)"><i
                             class="fas-solid fa-paper-plane"></i>&nbsp;Just Return</button>
-                    <a routerLink="/book/my-books" class="btn btn-link text-danger">
+                    <button (click)="selectedBook=undefined" class="btn btn-link text-danger">
                         <i class="fas fa-times"></i>&nbsp;Cancel
-                    </a>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
 </div>
-
+}
+@if(!selectedBook){
 <div>
+
     <table class="table">
         <thead>
             <tr>
@@ -135,3 +138,4 @@
         </nav>
     </div>
 </div>
+}
