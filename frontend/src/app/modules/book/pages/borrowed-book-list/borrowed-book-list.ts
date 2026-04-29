@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { BorrowedBookResponse, FeedBackRequest, PageResponseBorrowedBookResponse } from '../../../../services/models';
 import { BookService, FeedBackService } from '../../../../services/services';
 import { FormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
 import { Rating } from "../../components/rating/rating";
 
 @Component({
   selector: 'app-borrowed-book-list',
-  imports: [FormsModule, RouterLink, Rating],
+  imports: [FormsModule, Rating],
   templateUrl: './borrowed-book-list.html',
   styleUrl: './borrowed-book-list.scss',
 })
